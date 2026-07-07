@@ -19,7 +19,7 @@ bin-release/
 .Rproj.user
 
 # Files to ignore
-.Rproj.user
+.Rproj.user 
 .Rhistory
 .RData
 .Ruserdata
