@@ -7,3 +7,58 @@ editor: visual
 
 # Metagenome Assembly
 
+| Ira's files | Northpaule's files |
+|------------------------------------|------------------------------------|
+| workshop3_metasm.Rproj | MB5370_Module_03.Rproj |
+| Home/raw_reads = Home/raw.data | Home/jd/MB5370_Module_03/raw_reads |
+| 01_metagenome_assembly.Rmd | Workshop.03.qmd (Home/jd/MB5370_Module_03/Workshop.files) |
+| flye (dir) | flye2 (dir) |
+
+## Step 1: Examine Reads
+
+**Read length distribution**
+
+``` bash
+# Unzips the raw data and sends the data to standard output
+zcat raw_data/raw_reads.fastq.gz \
+# This is a pipe. It sends output from the previous command as input to the next command
+  | \
+# Here we select only the top 40k lines in the file. This equates to 10k reads. It should be plenty to get some stats
+  head -n 40000 | \
+# This is a small bioawk program. It prints the name of each sequence followed by its length
+  bioawk -c fastx '{print $name,length($seq)}' \
+# Send outputs to a file called read_lengths.txt
+  > read_lengths.txt
+```
+
+```{r}
+library(tidyverse)
+
+rl_data <- read_tsv("../read_lengths.txt",col_names = c("id","length"), show_col_types = FALSE)
+
+ggplot(rl_data, aes(x=length/1000)) + 
+  geom_histogram(binwidth = 2) +
+  xlab("Read Length Kb") + ylab("Number of Reads")
+```
+
+**Figure 1.** Histogram of reads lengths in the mock nanopore sequencing dataset.
+
+**Calculating read N50**
+
+```{r}
+total_len <- sum(rl_data$length)
+
+rl_data %>% 
+  arrange(desc(length)) %>%  # longest reads first
+  mutate(cumsum = cumsum(length)) %>%  # running total of bases
+  filter(cumsum>total_len/2) %>%  # keep rows after halfway point (N50)
+  head(n=1) # first row is the N50 read
+```
+
+So we expect that the N50 of our assembly should be \> 22Kb.
+
+# Step 2: Assembly
+
+**Question 3.1**
+
+
