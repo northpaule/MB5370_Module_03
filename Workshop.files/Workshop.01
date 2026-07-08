@@ -9,23 +9,23 @@ editor: visual
 
 ### Definitions
 
-*Console* expects commands in R
+-   *Console* expects commands in R
 
-*Terminal* expects unix commands
+-   *Terminal* expects unix commands
 
-*pwd* "print working directly"
+-   *pwd* "print working directly"
 
-*ls* shows what is present in our current directory
+-   *ls* shows what is present in our current directory
 
-*ls -1* prints in long format
+-   *ls -1* prints in long format
 
-*ls -lr* -r flag (reverse sort)
+-   *ls -lr* -r flag (reverse sort)
 
-*ls -l /usr* this passes through a different directory /usr
+-   *ls -l /usr* this passes through a different directory /usr
 
 ### Creating a directory
 
-```{base}
+``` bash
 cd 
 mkdir command_line 
 ls
@@ -33,7 +33,7 @@ ls
 
 ### Working in a new directory
 
-```{base}
+``` bash
 cd command_line
 pwd
 ```
@@ -44,7 +44,7 @@ pwd
 
 ### Functions and flags
 
-```{base}
+``` bash
 #Finding fasta header
 grep '^>' test.fasta
 
@@ -53,14 +53,26 @@ grep KDRNKKNSAK test.fasta # this will flag/highlight the sequence we are lookin
 
 #Viewing flags
 man grep # shows command manual
-
 ```
 
 flags are basically command shortcuts
 
-```{base}
+``` bash
 #This is using the shortcut/flag -n withing the function grep to find the chunk with the sequence: KDRNKKNSAK inside the file: test.fasta and tells us that there are 3 lines with the desired sequences
 grep -n KDRNKKNSAK test.fasta
 ```
 
 Tip: Remember to check where you are before running commands!!!!
+
+### Sequence data formats
+
+**FASTA** Used for reference data like nucleotide and protein data. No quality scores. The *fasta* format consists of 1 or more entries each of which consists of a header and a sequence.
+
+**FASTQ** Used for raw read from net gen sequencing experiments. Includes quality scores for every base pair. The *fastq* format is designed for storing sequencing data along with quality scores.
+
+*fastq* has 4 lines each read occupies 4 lines in a fastq file. The lines are as follows;
+
+1.  Starts with \@ and contains a unique identifier for the sequence
+2.  Is the sequence itself Starts with + and almost always nothing else
+3.  Contains quality scores
+4.  These are encoded using ASCII characters with one character per base
