@@ -20,10 +20,9 @@ editor: visual
 
 -   *cd ..* brings me back to previous root (move up)
 
-
 ### Redbean assembly
 
-```bash
+``` bash
 # Create a new directory for redbean
 mkdir redbean
 cd redbean # enters the new directory
@@ -46,24 +45,21 @@ wtpoa-cns -t 4 -i amtp4_20x.ctg.lay.gz -fo amtp4_20x.ctg.fa # 20x coverage
 
 ### Flye assembly
 
-```bash
+``` bash
 # Create flye directory and cd in
 mkdir flye
 cd flye
 ```
-```bash
+
+``` bash
 # Make symbolic links to the same raw data we used for redbean
 ln -s ../redbean/amtp4.fastq .
 ln -s ../redbean/amtp4_20x.fastq .
 ```
 
+*squeue* let's me check the status of my job *tail slum-XXX.out* shows me the "tail end" of my job
 
+*tail -f slum-XXX.out* shows me the job in real time, enter ctrl + c to cancel this command regain access to terminal
 
-
-
-
-
-
-
-
+*top* shows me all most intensive CPU tasks being run
 
