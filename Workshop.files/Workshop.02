@@ -1,0 +1,69 @@
+---
+title: "Workshop.02"
+author: "Paule Mathieu"
+format: html
+editor: visual
+---
+
+## Genome Assembly
+
+### Setting up
+
+| Ira's Terminology  | File type | Northpaule's Terminology | File type |
+|--------------------|-----------|--------------------------|-----------|
+| workshop2_assembly | .Rproj    | Workshop.02              | .md       |
+| 01.assembly        | .Rmd      | Workshop.02              | .md       |
+|                    |           |                          |           |
+|                    |           |                          |           |
+
+-   *cd \~* brings me home
+
+-   *cd ..* brings me back to previous root (move up)
+
+
+### Redbean assembly
+
+```bash
+# Create a new directory for redbean
+mkdir redbean
+cd redbean # enters the new directory
+
+# Collecting a small subset 
+cat /pvol/data/amtp4/*_[012].fastq > amtp4.fastq # 6x coverage
+
+# Run the assembly
+wtdbg2 -x ont -g 5m -t 4 -i amtp4.fastq -fo amtp4
+wtpoa-cns -t 4 -i amtp4.ctg.lay.gz -fo amtp4.ctg.fa # took 44 sec
+
+# Inspect assembly statistics
+assembly-stats amtp4.ctg.fa
+
+# Run with higher coverage
+cat /pvol/data/amtp4/*.fastq > amtp4_20x.fastq
+wtdbg2 -x ont -g 5m -t 4 -i amtp4_20x.fastq -fo amtp4_20x
+wtpoa-cns -t 4 -i amtp4_20x.ctg.lay.gz -fo amtp4_20x.ctg.fa # 20x coverage
+```
+
+### Flye assembly
+
+```bash
+# Create flye directory and cd in
+mkdir flye
+cd flye
+```
+```bash
+# Make symbolic links to the same raw data we used for redbean
+ln -s ../redbean/amtp4.fastq .
+ln -s ../redbean/amtp4_20x.fastq .
+```
+
+
+
+
+
+
+
+
+
+
+
