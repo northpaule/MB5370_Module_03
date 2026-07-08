@@ -63,3 +63,15 @@ ln -s ../redbean/amtp4_20x.fastq .
 
 *top* shows me all most intensive CPU tasks being run
 
+
+### Bandage
+Comparing the two assemblages. The weird contig with a lot of overlap shows less connections in the higher coverage, but still shows a higher depth.
+
+I honestly cannot tell which one looks like chromosomes and which ones look like plasmids... It would be great to have a id-guide to compare it too to know if I am looking at the right thing or simply what I am looking at.
+
+### Quast
+```bash
+# Look at the contig sizes in the flye assembly
+cat ../flye/amtp4_20x/assembly.fasta | bioawk -c fastx '{print $name, length($seq)}' | sort -n -k2
+```
+
