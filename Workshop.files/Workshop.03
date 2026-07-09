@@ -12,7 +12,7 @@ editor: visual
 | workshop3_metasm.Rproj | MB5370_Module_03.Rproj |
 | Home/raw_reads = Home/raw.data | Home/jd/MB5370_Module_03/raw_reads |
 | 01_metagenome_assembly.Rmd | Workshop.03.qmd (Home/jd/MB5370_Module_03/Workshop.files) |
-| flye (dir) | flye2 (dir) |
+| flye (dir) | flye (dir) |
 
 ## Step 1: Examine Reads
 
@@ -59,6 +59,85 @@ So we expect that the N50 of our assembly should be \> 22Kb.
 
 # Step 2: Assembly
 
-**Question 3.1**
+**Question 3.1** The largest contig has 4,681,059 bp and a depth of 21.0 x. Depth = coverage depth.
 
+**Question 3.2** Based on depth, and the fact it has only 1 chromosome (no links/nodes), it is *Geitlerinema sp. PCC 7407*.
 
+**Question 3.3** Locate two circular chromosomes for Vibrio alfacsensis in bandage. Use the outputs from gc.awk to help with this. I am not sure but I am leaning towards edge_40;edge_9 since they both have the correct depth coverage and the sum of their size roughly corresponds to the expected size.
+
+# Step 3: Basic Assembly QC
+
+```{r}
+gc <- read_tsv("../assembly_check/assembly.gc.tsv",col_names = c("#seq_name","length","GC"))
+info <- read_tsv("../flye/mock/assembly_info.txt") 
+
+# Joining both datasets
+gc_info <- info %>% 
+  left_join(gc)
+
+gc_info %>% 
+  ggplot(aes(x=GC)) + geom_histogram() + ylab("Number of contigs")
+```
+
+**Figure 2.** Histogram of GC content values for assembled contigs in a flye assembly of the mock community dataset.
+
+```{r}
+# Data wrangling
+gc_info %>% 
+  filter(GC<0.8) %>% 
+  filter(cov.<25) %>% 
+  ggplot(aes(x=GC,y=cov.)) + geom_point(aes(size=length)) + ylab("Coverage depth")
+```
+
+**Figure 3.** Coverage and GC content of assembled contigs in the mock community assembly. Contigs lengths are shown through point size.
+
+**Question 3.4** The cluster of contigs with high GC content (\>60%) and coverage depth around 7.5x is likely to be *Desulfovibrio sulfodismutans*.
+
+```{r}
+# Adding labels
+#install.packages("ggrepel")
+library(ggrepel)
+gc_info %>% 
+  filter(GC<0.8) %>% 
+  filter(cov.<25) %>% 
+  ggplot(aes(x=GC,y=cov.)) + geom_point(aes(size=length)) + geom_label_repel(aes(label=`#seq_name`))
+```
+
+**Figure 4.** Coverage and GC content of assembled contigs in the mock community assembly. Contigs lengths are shown through point size. Only contigs with more than 25x coverage and less than 80% GC coverage are shown.
+
+**Question 3.5**
+
+```{r}
+# Sum reference lengths
+sum_length <- sum(gc$length)
+sum_length_gc_info <- sum(gc_info$length)
+
+# Assembly length
+assembly_length <- (sum_length/total_len)*100
+```
+
+The total length is 18,315,582 bp and the proportion is 12.3. \*\* I think my assemblage is slightly different. I noticed that my graph are not exactly the same as those in the workbook, so it makes sense that my sizes are slgihtly different as well.
+
+# Step 4: Binning
+
+Grouping contigs based on nucleotide composition and read coverage using metabat2 on Terminal.
+
+``` bash
+# Prepare an input file summarising read depth information for all contigs
+
+cat ../flye/mock/assembly_info.txt  | grep -v '#' | awk '{OFS="\t";print $1,$3}' > depths.txt
+
+# Creating a compatible file with same order as previous 
+cat depths.txt | awk '{print $1}' | xargs samtools faidx ../flye/mock/assembly.fasta > assembly_ordered.fasta
+
+# Run metabat
+metabat2 -i assembly_ordered.fasta -a depths.txt --cvExt -o bins/metabat --seed 5
+```
+
+# Step 5:
+
+Checking bin quality with checkM. Created a new directory, sourced bins and added our longest contig (edge_28). Submitted shell through:
+
+``` bash
+sbatch run_checkm.sh
+```
