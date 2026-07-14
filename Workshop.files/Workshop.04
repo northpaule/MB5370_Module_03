@@ -39,3 +39,5 @@ run_checkm.bbd.sh
 sbatch run_checkm_bbd.sh
 ```
 
+### Functonial Analysis of the BBD Metagenome
+
