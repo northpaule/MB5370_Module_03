@@ -25,6 +25,7 @@ bin-release/
 .Ruserdata
 .DS_Store
 .R
+.txt
 
 
 # Extensions to ignore - toggle on and off as required
@@ -41,7 +42,20 @@ bin-release/
 # Folders to ignore
 archive/
 output/
+flye/
+quast/
+raw_reads/
+redbean/
+assembly_check/
+checkm/
+metabat/
+gtdbtk/
+prokka/
+minpath/
 
 # Keywords to ignore
 *archive
+
+gc.awk
+read_lengths.txt
 
