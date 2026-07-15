@@ -3,7 +3,6 @@ title: "Workshop.02"
 author: "Paule Mathieu"
 format: html
 editor: visual
-output-file: Workshop.02.html
 ---
 
 ## Genome Assembly
