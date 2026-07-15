@@ -74,21 +74,27 @@ Superpathway of tetrathionate reduction **PWY-5360** includes enzymes required t
 **Question 4.1**
 
 How many bins contain at least one gene from this pathway?
-```bash
+
+``` bash
 Four bins have at least one gene from this path: contig_121, metabat.25, metabat.48, metabat.55.
 ```
-Which bin has all of the genes (ie a complete pathway)? 
-```bash
+
+Which bin has all of the genes (ie a complete pathway)?
+
+``` bash
 Metabat.55 has all of the genes (4/4).
 ```
 
 **Question 4.2**
 
 How many bins contain the pathway PWY-5360?
-```bash
+
+``` bash
 Only one bin is found in this pathway: metabat.8.
 ```
-What family (in a taxonomic sense) do these bins belong to? 
-```bash
+
+What family (in a taxonomic sense) do these bins belong to?
+
+``` bash
 *Salmonella typhimurium*
 ```
