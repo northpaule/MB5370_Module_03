@@ -7,13 +7,15 @@ editor: visual
 
 ## Assembling the Metagenome of Black Band Disease
 
-Generating the metagenome of BBD from *Acropora hyacynthus* at Orpheus Island. Created a symbolic link between BBD data and raw_reads directory. Inside *flye* directory, modified a copy of run_flye.sh script (> run_flye_bbd.sh) and submitted slurm to sbatch through:
-```bash
+Generating the metagenome of BBD from *Acropora hyacynthus* at Orpheus Island. Created a symbolic link between BBD data and raw_reads directory. Inside *flye* directory, modified a copy of run_flye.sh script (\> run_flye_bbd.sh) and submitted slurm to sbatch through:
+
+``` bash
 sbatch run_flye_bbd.sh
 ```
 
 Step 2. Run metabat on flye_bbd assembly
-```bash
+
+``` bash
 cd ~/MB5370_Module_03/metabat
 # Extract depth information
 cat ../flye/bbd/assembly_info.txt  | grep -v '#' | awk '{OFS="\t";print $1,$3}' > depths_bbd.txt
@@ -23,8 +25,9 @@ cat depths_bbd.txt | awk '{print $1}' | xargs samtools faidx ../flye/bbd/assembl
 metabat2 -i assembly_bbd_ordered.fasta -a depths_bbd.txt --cvExt -o bins_bbd/metabat --seed 5
 ```
 
-Step 3. Run checkM on bins created by metabat. *subsitute XX with nb of largest contig edge_121
-```bash
+Step 3. Run checkM on bins created by metabat. \*subsitute XX with nb of largest contig edge_121
+
+``` bash
 cd ~/MB5370_Module_03/checkm
 mkdir bins_bbd
 cp ../metabat/bins_bbd/*.fa bins_bbd/
@@ -32,7 +35,8 @@ samtools faidx ../flye/bbd/assembly.fasta contig_XX > bins_bbd/contig_XX.fa
 ```
 
 Step 4. Create a new slurm shell script to send your checkM.
-```bash
+
+``` bash
 run_checkm.bbd.sh
 
 # Submit batch
@@ -40,4 +44,27 @@ sbatch run_checkm_bbd.sh
 ```
 
 ### Functonial Analysis of the BBD Metagenome
+
+| Analysis Step | File/Folder                   |
+|---------------|-------------------------------|
+| Flye          | flye/bbd                      |
+| MetaBAT       | metabat/bins_bbd              |
+| CheckM        | checkm/checkm_results_bbd.txt |
+
+Step 5: Bin checkm based on results
+
+We isolated the bins with a completeness higher than 15% (into bbd_topbins.txt) using *cat.*
+
+
+Step 6: Perform taxonomic classification with *gtdbtk*
+
+We ran a classification workflow.
+
+
+Step 7. Find and annotate genes with *prokka*
+
+We identified the genes present within the genomes of bbd taxa.
+
+
+
 
