@@ -55,16 +55,40 @@ Step 5: Bin checkm based on results
 
 We isolated the bins with a completeness higher than 15% (into bbd_topbins.txt) using *cat.*
 
-
 Step 6: Perform taxonomic classification with *gtdbtk*
 
 We ran a classification workflow.
-
 
 Step 7. Find and annotate genes with *prokka*
 
 We identified the genes present within the genomes of bbd taxa.
 
+Step 8. Infer metabolic pathways
 
+We used *minpath* to take functional info for individual genes and use this to infer the presence of broader biological pathways (involving multiple genes/steps). We ran this on each of the genomes (bins) in our analysis. Minpath looked at all of the annotated genes in our data and infer the minimal set of biological pathways that can explain the presence of all these genes.
 
+Photosynthesis light reaction **PWY-101** includes essential components of photosynthesis that occur in light, Photosystem I and Photosystem II.
 
+Superpathway of tetrathionate reduction **PWY-5360** includes enzymes required to reduce sulfite to hydrogen sulfide. Note that sulfite acts as the terminal electron acceptor in this pathway, however, in a broader sense the term “sulfate reducing” refers to micro-organisms that can produce sulfide from a range of oxidised sulfur compounds.
+
+**Question 4.1**
+
+How many bins contain at least one gene from this pathway?
+```bash
+Four bins have at least one gene from this path: contig_121, metabat.25, metabat.48, metabat.55.
+```
+Which bin has all of the genes (ie a complete pathway)? 
+```bash
+Metabat.55 has all of the genes (4/4).
+```
+
+**Question 4.2**
+
+How many bins contain the pathway PWY-5360?
+```bash
+Only one bin is found in this pathway: metabat.8.
+```
+What family (in a taxonomic sense) do these bins belong to? 
+```bash
+*Salmonella typhimurium*
+```
